@@ -40,6 +40,9 @@ public class Ball : MonoBehaviour
     [HideInInspector]
     public bool started = false;
 
+    [HideInInspector]
+    public int hitPrecision;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -64,7 +67,7 @@ public class Ball : MonoBehaviour
 
         if (fromEnemy)
         {
-            GameManager.instance.DamageEnemy((int)(ballSpeed * 5));
+            GameManager.instance.DamageEnemy();
             destinationPos = new Vector3(Random.Range(-2f, 2f), 0.18f, Random.Range(-1f, -3f));
             float speedFactor = Vector3.Distance(startingPos, destinationPos) / 5f;
             ballSpeed = 2f + (3f * speedFactor * (Random.Range(0.5f, 0.8f)));
@@ -79,7 +82,7 @@ public class Ball : MonoBehaviour
             bool firstHit = false;
             if (started)
             {
-                GameManager.instance.DamagePlayer((int)(ballSpeed * 5));
+                GameManager.instance.DamagePlayer();
             }
             else
             {
@@ -93,6 +96,7 @@ public class Ball : MonoBehaviour
             if (!firstHit)
             {
                 ballSpeed = 2f + (3f * speedFactor * (GameManager.instance.player.GetComponent<Player>().swingProgress / 100f));
+                hitPrecision = GameManager.instance.player.GetComponent<Player>().swingProgress;
             }
             else
             {

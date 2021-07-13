@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI comboText;
 
     [HideInInspector]
-    private int maxPlayerStamina, maxEnemyStamina, maxPlayerDamage, maxEnemyDamage;
+    private int maxPlayerStamina, maxEnemyStamina;
     [HideInInspector]
     public int playerStamina, enemyStamina, playerDamage, enemyDamage;
 
@@ -45,8 +45,8 @@ public class GameManager : MonoBehaviour
     {
         playerStamina = maxPlayerStamina = 1000;
         enemyStamina = maxEnemyStamina = 1000;
-        playerDamage = maxPlayerDamage = 10;
-        enemyDamage = maxEnemyDamage = 10;
+        playerDamage = 10;
+        enemyDamage = 10;
 
         enemyFillGoal = (float)enemyStamina / maxEnemyStamina;
         playerFillGoal = (float)playerStamina / maxPlayerStamina;
@@ -60,15 +60,24 @@ public class GameManager : MonoBehaviour
         enemyHpBar.fillAmount = Mathf.Lerp(enemyHpBar.fillAmount, enemyFillGoal, 5f * Time.deltaTime);
     }
 
-    public void DamageEnemy(int damage)
+    public void DamageEnemy()
     {
-        damage = (int)(damage * (1f + (Mathf.Max(combo - 1, 0) * 0.5f)));
-        enemyStamina -= damage;
+        float precision = ball.GetComponent<Ball>().hitPrecision;
+        if (precision == 0)
+        {
+            precision = 50f;
+        }
+
+        float precisionMultiplier = 1 + (precision / 100f);
+        float comboMultiplier = (Mathf.Max(1f, combo) * 0.5f);
+
+        int damageToDo = (int)(playerDamage * comboMultiplier * precisionMultiplier);
+        enemyStamina -= damageToDo;
         enemyFillGoal = (float)enemyStamina / maxEnemyStamina;
         enemyHp.text = enemyStamina.ToString();
 
         GameObject damageObject = Instantiate(damageText, enemy.transform.position + (Vector3.up * 1.6f) + (Vector3.forward * -0.25f), Quaternion.Euler(new Vector3(45, 0, 0)));
-        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damage.ToString();
+        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damageToDo;
 
         if (enemyStamina <= 0)
         {
@@ -84,14 +93,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer()
     {
-        playerStamina -= damage;
+        int damageToDo = (int)(enemyDamage * Random.Range(0.6f, 1.4f));
+        playerStamina -= damageToDo;
         playerFillGoal = (float)playerStamina / maxPlayerStamina;
         playerHp.text = playerStamina.ToString();
 
         GameObject damageObject = Instantiate(damageText, player.transform.position + (Vector3.up * 1.2f), Quaternion.Euler(new Vector3(45, 0, 0)));
-        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damage.ToString();
+        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damageToDo.ToString();
 
         if (playerStamina <= 0)
         {
