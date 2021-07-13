@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     private int combo = 0;
 
+    public GameObject damageText;
+
     public GameObject player;
     public GameObject enemy;
     public SwipeControls swipeControls;
@@ -41,8 +43,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerStamina = maxPlayerStamina = 80;
-        enemyStamina = maxEnemyStamina = 80;
+        playerStamina = maxPlayerStamina = 1000;
+        enemyStamina = maxEnemyStamina = 1000;
         playerDamage = maxPlayerDamage = 10;
         enemyDamage = maxEnemyDamage = 10;
 
@@ -60,9 +62,13 @@ public class GameManager : MonoBehaviour
 
     public void DamageEnemy(int damage)
     {
+        damage = (int)(damage * (1f + (Mathf.Max(combo - 1, 0) * 0.5f)));
         enemyStamina -= damage;
         enemyFillGoal = (float)enemyStamina / maxEnemyStamina;
         enemyHp.text = enemyStamina.ToString();
+
+        GameObject damageObject = Instantiate(damageText, enemy.transform.position + (Vector3.up * 1.6f) + (Vector3.forward * -0.25f), Quaternion.Euler(new Vector3(45, 0, 0)));
+        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damage.ToString();
 
         if (enemyStamina <= 0)
         {
@@ -83,6 +89,9 @@ public class GameManager : MonoBehaviour
         playerStamina -= damage;
         playerFillGoal = (float)playerStamina / maxPlayerStamina;
         playerHp.text = playerStamina.ToString();
+
+        GameObject damageObject = Instantiate(damageText, player.transform.position + (Vector3.up * 1.2f), Quaternion.Euler(new Vector3(45, 0, 0)));
+        damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "-" + damage.ToString();
 
         if (playerStamina <= 0)
         {
