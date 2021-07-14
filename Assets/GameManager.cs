@@ -25,6 +25,14 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI enemyHp;
     public TextMeshProUGUI comboText;
 
+    public TextMeshProUGUI level1text;
+    public TextMeshProUGUI level2text;
+    public TextMeshProUGUI level3text;
+    public TextMeshProUGUI level4text;
+    public TextMeshProUGUI level5text;
+
+    public Image levelProgressBar;
+
     [HideInInspector]
     private int maxPlayerStamina, maxEnemyStamina;
     [HideInInspector]
@@ -32,6 +40,9 @@ public class GameManager : MonoBehaviour
 
     private float playerFillGoal;
     private float enemyFillGoal;
+
+    private int world;
+    private int level;
 
     private void Awake()
     {
@@ -43,8 +54,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerStamina = maxPlayerStamina = 1000;
-        enemyStamina = maxEnemyStamina = 1000;
+        world = PlayerPrefs.GetInt("world", 20);
+        level = PlayerPrefs.GetInt("level", 1);
+
+        SetUpUI();
+
+        playerStamina = maxPlayerStamina = 100;
+        enemyStamina = maxEnemyStamina = 100;
         playerDamage = 10;
         enemyDamage = 10;
 
@@ -68,8 +84,8 @@ public class GameManager : MonoBehaviour
             precision = 50f;
         }
 
-        float precisionMultiplier = 1 + (precision / 100f);
-        float comboMultiplier = (Mathf.Max(1f, combo) * 0.5f);
+        float precisionMultiplier = precision / 100f;
+        float comboMultiplier = 1 + (combo * 0.5f);
 
         int damageToDo = (int)(playerDamage * comboMultiplier * precisionMultiplier);
         enemyStamina -= damageToDo;
@@ -89,6 +105,8 @@ public class GameManager : MonoBehaviour
             Destroy(player.GetComponent<Player>().racketHolderAnimator.gameObject);
             Vector3 cameraGoalPos = Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos;
             Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
+            Destroy(ball.GetComponent<Ball>().hitFeedback);
+            comboText.text = "";
             Destroy(ball);
         }
     }
@@ -113,6 +131,8 @@ public class GameManager : MonoBehaviour
             Destroy(player.GetComponent<Player>().racketHolderAnimator.gameObject);
             Vector3 cameraGoalPos = Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos;
             Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
+            Destroy(ball.GetComponent<Ball>().hitFeedback);
+            comboText.text = "";
             Destroy(ball);
         }
     }
@@ -129,6 +149,34 @@ public class GameManager : MonoBehaviour
         {
             combo = 0;
             comboText.text = "";
+        }
+    }
+
+    private void SetUpUI()
+    {
+        level1text.text = (((world - 1) * 5) + 1).ToString();
+        level2text.text = (((world - 1) * 5) + 2).ToString();
+        level3text.text = (((world - 1) * 5) + 3).ToString();
+        level4text.text = (((world - 1) * 5) + 4).ToString();
+        level5text.text = (((world - 1) * 5) + 5).ToString();
+
+        switch(level)
+        {
+            case 1:
+                levelProgressBar.fillAmount = 0.165f;
+                break;
+            case 2:
+                levelProgressBar.fillAmount = 0.365f;
+                break;
+            case 3:
+                levelProgressBar.fillAmount = 0.57f;
+                break;
+            case 4:
+                levelProgressBar.fillAmount = 0.78f;
+                break;
+            case 5:
+                levelProgressBar.fillAmount = 1f;
+                break;
         }
     }
 }

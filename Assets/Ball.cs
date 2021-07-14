@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Ball : MonoBehaviour
 {
+    public TextMeshProUGUI hitFeedback;
     private Vector3 startingPos;
     [HideInInspector]
     public Vector3 destinationPos;
@@ -102,6 +104,11 @@ public class Ball : MonoBehaviour
             {
                 ballSpeed = 4.5f;
             }
+
+            if (!firstHit)
+            {
+                DisplayHitFeedback(GameManager.instance.player.GetComponent<Player>().swingProgress);
+            }
             
 
             if (GameManager.instance.player.GetComponent<Player>().swingProgress == 100)
@@ -188,5 +195,27 @@ public class Ball : MonoBehaviour
         enemyRacketHolderAnimator.SetBool("swingRight", false);
         enemyRacketHolderAnimator.SetBool("swingLeft", false);
         enemyRacketAnimator.SetBool("swing", false);
+    }
+
+    private void DisplayHitFeedback(int precision)
+    {
+        if (precision == 25 || precision == 35 || precision == 45 || precision == 65)
+        {
+            hitFeedback.text = "Too Late...";
+            hitFeedback.color = new Color32(250, 48, 100, 255);
+            hitFeedback.gameObject.transform.GetComponent<Wobble>().DoTheWobble();
+        }
+        else if (precision == 100)
+        {
+            hitFeedback.text = "Perfect!";
+            hitFeedback.color = new Color32(0, 171, 255, 255);
+            hitFeedback.gameObject.transform.GetComponent<Wobble>().DoTheWobble();
+        }
+        else
+        {
+            hitFeedback.text = "Too Early...";
+            hitFeedback.color = new Color32(255, 132, 52, 255);
+            hitFeedback.gameObject.transform.GetComponent<Wobble>().DoTheWobble();
+        }
     }
 }
