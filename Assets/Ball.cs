@@ -15,7 +15,7 @@ public class Ball : MonoBehaviour
 
     private float totalDistance;
 
-    private bool hitCheckReset;
+    private bool hitCheckReset;   
 
     public float yOffset;
     public float amplitude;

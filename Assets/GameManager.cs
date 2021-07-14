@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public GameObject enemy;
     public SwipeControls swipeControls;
     public GameObject ball;
+    public GameObject explosion;
+    public GameObject explosionShake;
 
     public Image enemyHpBar;
     public Image playerHpBar;
@@ -107,6 +109,8 @@ public class GameManager : MonoBehaviour
             Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
             Destroy(ball.GetComponent<Ball>().hitFeedback);
             comboText.text = "";
+            Instantiate(explosion, ball.transform.position, Quaternion.identity);
+            Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
             Destroy(ball);
         }
     }
@@ -133,6 +137,8 @@ public class GameManager : MonoBehaviour
             Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
             Destroy(ball.GetComponent<Ball>().hitFeedback);
             comboText.text = "";
+            Instantiate(explosion, ball.transform.position, Quaternion.identity);
+            Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
             Destroy(ball);
         }
     }
