@@ -6,8 +6,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+
     public static GameManager instance = null;
+
+    public GameOverManager gameOverManager;
 
     private int combo = 0;
 
@@ -19,6 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject ball;
     public GameObject explosion;
     public GameObject explosionShake;
+    public GameObject darken;
 
     public Image enemyHpBar;
     public Image playerHpBar;
@@ -35,6 +38,11 @@ public class GameManager : MonoBehaviour
 
     public Image levelProgressBar;
 
+    public Transitioner transitioner;
+
+    [HideInInspector]
+    public bool gameOver;
+
     [HideInInspector]
     private int maxPlayerStamina, maxEnemyStamina;
     [HideInInspector]
@@ -43,8 +51,10 @@ public class GameManager : MonoBehaviour
     private float playerFillGoal;
     private float enemyFillGoal;
 
-    private int world;
-    private int level;
+    [HideInInspector]
+    public int world;
+    [HideInInspector]
+    public int level;
 
     private void Awake()
     {
@@ -56,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        gameOver = false;
         world = PlayerPrefs.GetInt("world", 20);
         level = PlayerPrefs.GetInt("level", 1);
 
@@ -111,6 +122,8 @@ public class GameManager : MonoBehaviour
             comboText.text = "";
             Instantiate(explosion, ball.transform.position, Quaternion.identity);
             Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
+            gameOver = true;
+            Invoke("GameOver", 2.5f);
             Destroy(ball);
         }
     }
@@ -139,6 +152,8 @@ public class GameManager : MonoBehaviour
             comboText.text = "";
             Instantiate(explosion, ball.transform.position, Quaternion.identity);
             Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
+            gameOver = true;
+            Invoke("GameOver", 2.5f);
             Destroy(ball);
         }
     }
@@ -184,5 +199,11 @@ public class GameManager : MonoBehaviour
                 levelProgressBar.fillAmount = 1f;
                 break;
         }
+    }
+
+    void GameOver()
+    {
+        darken.SetActive(true);
+        gameOverManager.StartProcedure(playerStamina == 0 ? false : true);
     }
 }

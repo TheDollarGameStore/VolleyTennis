@@ -75,35 +75,43 @@ public class Player : MonoBehaviour
         }
         
 
-        if (swingReady)
+        if (!GameManager.instance.gameOver)
         {
-            if (GameManager.instance.swipeControls.swipeLeft)
+            if (swingReady)
             {
-                leftSwing = true;
-                racketAnimator.SetBool("swing", true);
-                racketHolderAnimator.SetBool("swingRight", true);
-                swingReady = false;
-                Invoke("ResetBool", 0.15f);
-                tr.emitting = true;
-                Invoke("SwingCooldownReset", 0.5f);
-            }
+                if (GameManager.instance.swipeControls.swipeLeft)
+                {
+                    leftSwing = true;
+                    racketAnimator.SetBool("swing", true);
+                    racketHolderAnimator.SetBool("swingRight", true);
+                    swingReady = false;
+                    Invoke("ResetBool", 0.15f);
+                    tr.emitting = true;
+                    Invoke("SwingCooldownReset", 0.5f);
+                }
 
-            if (GameManager.instance.swipeControls.swipeRight)
-            {
-                leftSwing = false;
-                racketAnimator.SetBool("swing", true);
-                racketHolderAnimator.SetBool("swingLeft", true);
-                swingReady = false;
-                Invoke("ResetBool", 0.15f);
-                tr.emitting = true;
-                Invoke("SwingCooldownReset", 0.5f);
+                if (GameManager.instance.swipeControls.swipeRight)
+                {
+                    leftSwing = false;
+                    racketAnimator.SetBool("swing", true);
+                    racketHolderAnimator.SetBool("swingLeft", true);
+                    swingReady = false;
+                    Invoke("ResetBool", 0.15f);
+                    tr.emitting = true;
+                    Invoke("SwingCooldownReset", 0.5f);
+                }
             }
         }
-        
     }
 
     private void ResetBool()
     {
+        if (racketAnimator != null)
+        {
+            racketAnimator.SetBool("swing", false);
+            racketHolderAnimator.SetBool("swingRight", false);
+            racketHolderAnimator.SetBool("swingLeft", false);
+        }
         racketAnimator.SetBool("swing", false);
         racketHolderAnimator.SetBool("swingRight", false);
         racketHolderAnimator.SetBool("swingLeft", false);
