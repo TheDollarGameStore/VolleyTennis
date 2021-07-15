@@ -6769,6 +6769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d195023029186a24e9aedebd6394ea1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverManager: {fileID: 1313216310}
 --- !u!61 &812139200
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12572,6 +12573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winOrLose: {fileID: 2115171084}
   prize: {fileID: 16434301}
+  isWin: 0
 --- !u!1 &1348556254
 GameObject:
   m_ObjectHideFlags: 0

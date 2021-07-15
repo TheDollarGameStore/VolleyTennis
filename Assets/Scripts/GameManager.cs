@@ -67,15 +67,29 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         gameOver = false;
-        world = PlayerPrefs.GetInt("world", 20);
+        world = PlayerPrefs.GetInt("world", 1);
         level = PlayerPrefs.GetInt("level", 1);
 
         SetUpUI();
 
-        playerStamina = maxPlayerStamina = 100;
-        enemyStamina = maxEnemyStamina = 100;
-        playerDamage = 10;
-        enemyDamage = 10;
+        playerStamina = maxPlayerStamina = 300 + (PlayerPrefs.GetInt("PlayerHPLevel", 1) * 25);
+        if (world == 1)
+        {
+            enemyStamina = maxEnemyStamina = (int)(100f * (level + (world * 1.5f)));
+        }
+        else if (world == 2)
+        {
+            enemyStamina = maxEnemyStamina = (int)(100f * (level + (world * 2f)));
+        }
+        else
+        {
+            enemyStamina = maxEnemyStamina = (int)(100f * (level + (world * 2.5f)));
+        }
+        playerDamage = 10 + (PlayerPrefs.GetInt("PlayerDamageLevel", 1) * 5);
+        enemyDamage = 10 + (world * level);
+
+        playerStamina = maxPlayerStamina /= 2;
+        enemyStamina = maxEnemyStamina /= 2;
 
         enemyFillGoal = (float)enemyStamina / maxEnemyStamina;
         playerFillGoal = (float)playerStamina / maxPlayerStamina;

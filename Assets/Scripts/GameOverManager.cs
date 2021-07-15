@@ -10,6 +10,9 @@ public class GameOverManager : MonoBehaviour
     public TextMeshProUGUI winOrLose;
     public TextMeshProUGUI prize;
 
+    [HideInInspector]
+    public bool isWin;
+
     private int prizePool;
 
     private bool start = false;
@@ -30,9 +33,16 @@ public class GameOverManager : MonoBehaviour
     // Update is called once per frame
     public void StartProcedure(bool isWin)
     {
+        this.isWin = isWin;
         start = true;
 
         prizePool = GameManager.instance.world * 100 + (Random.Range(10, 20) * GameManager.instance.world);
+
+        if (!isWin)
+        {
+            prizePool /= 2;
+        }
+
         PlayerPrefs.SetInt("PrizePool", prizePool);
 
         prize.text = "x" + prizePool.ToString();

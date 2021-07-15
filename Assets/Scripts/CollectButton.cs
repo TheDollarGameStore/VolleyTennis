@@ -6,9 +6,9 @@ public class CollectButton : MonoBehaviour
 {
     private Wobble wobbler;
 
-    private bool hovered = false;
-
     private bool collected = false;
+
+    public GameOverManager gameOverManager;
 
     private void Start()
     {
@@ -28,6 +28,19 @@ public class CollectButton : MonoBehaviour
 
     void NextRoom()
     {
-        GameManager.instance.transitioner.FadeIn("Play");
+        if (gameOverManager.isWin)
+        {
+            if (GameManager.instance.level != 5)
+            {
+                PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level", 1) + 1);
+            }
+            else
+            {
+                PlayerPrefs.SetInt("level", 1);
+                PlayerPrefs.SetInt("world", PlayerPrefs.GetInt("world", 1) + 1);
+            }
+        }
+
+        GameManager.instance.transitioner.FadeIn("Upgrades");
     }
 }
