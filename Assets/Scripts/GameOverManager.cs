@@ -36,11 +36,19 @@ public class GameOverManager : MonoBehaviour
         this.isWin = isWin;
         start = true;
 
-        prizePool = GameManager.instance.world * 100 + (Random.Range(10, 20) * GameManager.instance.world);
+        int incomeLevelMult = (PlayerPrefs.GetInt("IncomeLevel", 1) - 1) * 5;
+        prizePool = (GameManager.instance.world * (100 + incomeLevelMult)) + (Random.Range(10, 20) * GameManager.instance.world);
 
         if (!isWin)
         {
             prizePool /= 2;
+        }
+        else
+        {
+            if (GameManager.instance.level == 5)
+            {
+                prizePool *= 2;
+            }
         }
 
         PlayerPrefs.SetInt("PrizePool", prizePool);

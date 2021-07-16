@@ -172,6 +172,10 @@ public class Ball : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, destinationPos, ballSpeed * Time.deltaTime);
 
+        if (ballYPos <= 0.41)
+        {
+            ballYPos = 0.4f;
+        }
         if (ballYPos <= 0.4f)
         {
             if (shouldChase && GameManager.instance.player.GetComponent<Player>().swingProgress != -1 && shouldChase && onPlayerLeft == GameManager.instance.player.GetComponent<Player>().leftSwing)

@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
         SetUpUI();
 
-        playerStamina = maxPlayerStamina = 300 + (PlayerPrefs.GetInt("PlayerHPLevel", 1) * 25);
+        playerStamina = maxPlayerStamina = 300 + (PlayerPrefs.GetInt("StaminaLevel", 1) * 25);
         if (world == 1)
         {
             enemyStamina = maxEnemyStamina = (int)(100f * (level + (world * 1.5f)));
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         {
             enemyStamina = maxEnemyStamina = (int)(100f * (level + (world * 2.5f)));
         }
-        playerDamage = 10 + (PlayerPrefs.GetInt("PlayerDamageLevel", 1) * 5);
+        playerDamage = 10 + (PlayerPrefs.GetInt("AttackLevel", 1) * 5);
         enemyDamage = 10 + (world * level);
 
         playerStamina = maxPlayerStamina /= 2;
