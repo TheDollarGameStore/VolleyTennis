@@ -9,6 +9,7 @@ public class GameOverManager : MonoBehaviour
 
     public TextMeshProUGUI winOrLose;
     public TextMeshProUGUI prize;
+    public Chest chest;
 
     [HideInInspector]
     public bool isWin;
@@ -33,6 +34,8 @@ public class GameOverManager : MonoBehaviour
     // Update is called once per frame
     public void StartProcedure(bool isWin)
     {
+        chest.Invoke("AddProgress", 1f);
+        
         this.isWin = isWin;
         start = true;
 

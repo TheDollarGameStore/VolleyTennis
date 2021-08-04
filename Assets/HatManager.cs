@@ -6,6 +6,8 @@ public class HatManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public List<HatButton> hats;
+
+    public HatSpawner hatSpawner;
     
     public void UpdateHatButtons()
     {
@@ -13,5 +15,7 @@ public class HatManager : MonoBehaviour
         {
             hats[i].UpdateButton();
         }
+
+        hatSpawner.ChangeHat();
     }
 }

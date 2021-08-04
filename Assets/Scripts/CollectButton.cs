@@ -17,7 +17,7 @@ public class CollectButton : MonoBehaviour
 
     public void Clicked()
     {
-        if (!collected)
+        if (!collected && !GameObject.FindGameObjectWithTag("Transition"))
         {
             wobbler.DoTheWobble();
             PlayerPrefs.SetInt("Money", PlayerPrefs.GetInt("Money", 0) + PlayerPrefs.GetInt("PrizePool", 0));
