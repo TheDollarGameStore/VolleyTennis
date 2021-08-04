@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hats.unity
     guid: 35e999c937f62f549818e341fa959c4c
+  - enabled: 1
+    path: Assets/Scenes/RewardChest.unity
+    guid: d119cf50f064f7d40a9bd144dded06ee
   m_configObjects: {}
