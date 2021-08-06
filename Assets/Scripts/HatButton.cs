@@ -26,7 +26,7 @@ public class HatButton : MonoBehaviour
 
     public void UpdateButton()
     {
-        unlocked = PlayerPrefs.GetInt("hat_" + hatIndex.ToString(), 1) == 1;
+        unlocked = PlayerPrefs.GetInt("hat_" + hatIndex.ToString(), 0) == 1;
         equipped = PlayerPrefs.GetInt("Equipped", -1) == hatIndex;
 
         if (equipped)

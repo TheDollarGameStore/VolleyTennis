@@ -7,6 +7,8 @@ TagManager:
   - Ball
   - Transition
   - Hat
+  - UnboxedResult
+  - UnboxedCashback
   layers:
   - Default
   - TransparentFX

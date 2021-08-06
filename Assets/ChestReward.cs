@@ -15,6 +15,12 @@ public class ChestReward : MonoBehaviour
     public GameObject closedChest;
     public GameObject openedChest;
 
+    public GameObject hatReward;
+
+    private bool collected;
+
+    public Transitioner transitioner;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +29,7 @@ public class ChestReward : MonoBehaviour
         opened = false;
         jumpEffect = GetComponent<JumpEffect>();
         wobbler = GetComponent<Wobble3D>();
+        collected = false;
     }
 
     // Update is called once per frame
@@ -35,6 +42,14 @@ public class ChestReward : MonoBehaviour
                 opened = true;
                 shaking = true;
                 jumpEffect.StopJumping();
+            }
+        }
+
+        if (collected)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                transitioner.FadeIn("Upgrades");
             }
         }
         
@@ -54,6 +69,10 @@ public class ChestReward : MonoBehaviour
                 closedChest.SetActive(false);
                 openedChest.SetActive(true);
                 wobbler.DoTheWobble();
+                GameObject unboxedHatObject = Instantiate(hatReward, transform.position, Quaternion.identity);
+                unboxedHatObject.GetComponent<HatSpawnerUnbox>().ChangeHat();
+                Camera.main.transform.GetComponent<UnboxingCamera>().followHat = true;
+                collected = true;
             }
         }
     }
