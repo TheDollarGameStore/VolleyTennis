@@ -95,6 +95,27 @@ public class GameManager : MonoBehaviour
         scoreGoalBar.fillAmount = Mathf.Lerp(scoreGoalBar.fillAmount, enemyFillGoal, 5f * Time.deltaTime);
     }
 
+    public void CheckWin()
+    {
+        if (currentScore >= scoreGoal)
+        {
+            scoreText.text = currentScore.ToString();
+            player.GetComponent<Player>().animator.SetBool("isWin", true);
+            enemy.GetComponent<Enemy>().animator.SetBool("isLose", true);
+            Destroy(ball.GetComponent<Ball>().enemyRacketHolderAnimator.gameObject);
+            Destroy(player.GetComponent<Player>().racketHolderAnimator.gameObject);
+            Vector3 cameraGoalPos = Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos;
+            Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
+            Destroy(ball.GetComponent<Ball>().hitFeedback);
+            comboText.text = "";
+            Instantiate(explosion, ball.transform.position, Quaternion.identity);
+            Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
+            gameOver = true;
+            Invoke("GameOver", 2.5f);
+            Destroy(ball);
+        }
+    }
+
     public void CalculateScore()
     {
         float precision = ball.GetComponent<Ball>().hitPrecision;
@@ -113,24 +134,6 @@ public class GameManager : MonoBehaviour
 
         GameObject damageObject = Instantiate(plusScoreText, player.transform.position + (Vector3.up * 1.6f) + (Vector3.forward * -0.25f), Quaternion.Euler(new Vector3(45, 0, 0)));
         damageObject.transform.Find("Text").GetComponent<TextFade>().displayText = "+" + damageToDo;
-
-        if (currentScore >= scoreGoal)
-        {
-            scoreText.text = currentScore.ToString();
-            player.GetComponent<Player>().animator.SetBool("isWin", true);
-            enemy.GetComponent<Enemy>().animator.SetBool("isLose", true);
-            Destroy(ball.GetComponent<Ball>().enemyRacketHolderAnimator.gameObject);
-            Destroy(player.GetComponent<Player>().racketHolderAnimator.gameObject);
-            Vector3 cameraGoalPos = Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos;
-            Camera.main.transform.GetComponent<CameraBehaviour>().cameraGoalPos = new Vector3(cameraGoalPos.x, 2.5f, cameraGoalPos.z);
-            Destroy(ball.GetComponent<Ball>().hitFeedback);
-            comboText.text = "";
-            Instantiate(explosion, ball.transform.position, Quaternion.identity);
-            Instantiate(explosionShake, ball.transform.position, Quaternion.identity);
-            gameOver = true;
-            Invoke("GameOver", 2.5f);
-            Destroy(ball);
-        }
     }
 
     public void DamagePlayer(bool playerAlreadyWon)

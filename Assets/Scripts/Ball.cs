@@ -77,6 +77,7 @@ public class Ball : MonoBehaviour
             enemyRacketAnimator.SetBool("swing", true);
             enemyRacketHolderAnimator.SetBool(GameManager.instance.enemy.transform.position.x > transform.position.x ? "swingRight" : "swingLeft", true);
             Invoke("ResetEnemyAnimatorBools", 0.15f);
+            GameManager.instance.CheckWin();
         }
         else
         {
