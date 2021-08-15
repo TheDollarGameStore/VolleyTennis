@@ -12,7 +12,10 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (PlayerPrefs.GetInt("level", 1) == 5)
+        {
+            transform.localScale = Vector3.one * 2;
+        }
     }
 
     // Update is called once per frame

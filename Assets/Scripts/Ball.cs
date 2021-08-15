@@ -69,7 +69,6 @@ public class Ball : MonoBehaviour
 
         if (fromEnemy)
         {
-            GameManager.instance.DamageEnemy();
             destinationPos = new Vector3(Random.Range(-2f, 2f), 0.18f, Random.Range(-1f, -3f));
             float speedFactor = Vector3.Distance(startingPos, destinationPos) / 5f;
             ballSpeed = 2f + (3f * speedFactor * (Random.Range(0.5f, 0.8f)));
@@ -82,11 +81,7 @@ public class Ball : MonoBehaviour
         else
         {
             bool firstHit = false;
-            if (started)
-            {
-                GameManager.instance.DamagePlayer();
-            }
-            else
+            if (!started)
             {
                 firstHit = true;
                 started = true;
@@ -124,6 +119,12 @@ public class Ball : MonoBehaviour
                 Instantiate(bumpUpLight, transform.position, Quaternion.identity);
                 rainbowTrail.emitting = false;
                 normalTrail.emitting = true;
+            }
+
+            if (started && !firstHit)
+            {
+                GameManager.instance.CalculateScore();
+                GameManager.instance.DamagePlayer(GameManager.instance.currentScore >= GameManager.instance.scoreGoal);
             }
         }
 
