@@ -45,12 +45,19 @@ public class Ball : MonoBehaviour
     [HideInInspector]
     public int hitPrecision;
 
+    public TutorialManager tutorialManager;
+
+    [HideInInspector]
+    public bool hasInvokedSwipeTutorial = false;
+
     // Start is called before the first frame update
     private void Start()
     {
         hitCheckReset = true;
         shouldChase = true;
         ball.transform.position = new Vector3(ball.transform.position.x, yOffset, ball.transform.position.z);
+
+        Invoke("ShowServeTutorial", 3f);
     }
 
     public void Hit(bool fromEnemy)
@@ -160,6 +167,7 @@ public class Ball : MonoBehaviour
 
         if (!started && GameManager.instance.swipeControls.tap)
         {
+            CancelInvoke("ShowServeTutorial");
             Hit(false);
         }
 
@@ -174,12 +182,24 @@ public class Ball : MonoBehaviour
 
         transform.position = Vector3.MoveTowards(transform.position, destinationPos, ballSpeed * Time.deltaTime);
 
-        if (ballYPos <= 0.41)
+        if (ballYPos <= 0.42)
         {
             ballYPos = 0.4f;
         }
         if (ballYPos <= 0.4f)
         {
+            if (!hasInvokedSwipeTutorial)
+            {
+                hasInvokedSwipeTutorial = true;
+                if (onPlayerLeft)
+                {
+                    Invoke("ShowSwipeLeftTutorial", 2f);
+                }
+                else
+                {
+                    Invoke("ShowSwipeRightTutorial", 2f);
+                }
+            }
             if (shouldChase && GameManager.instance.player.GetComponent<Player>().swingProgress != -1 && shouldChase && onPlayerLeft == GameManager.instance.player.GetComponent<Player>().leftSwing)
             {
                 Hit(false);
@@ -188,6 +208,12 @@ public class Ball : MonoBehaviour
             {
                 Hit(true);
             }
+        }
+        else
+        {
+            hasInvokedSwipeTutorial = false;
+            CancelInvoke("ShowSwipeLeftTutorial");
+            CancelInvoke("ShowSwipeRightTutorial");
         }
     }
 
@@ -223,5 +249,20 @@ public class Ball : MonoBehaviour
             hitFeedback.color = new Color32(255, 132, 52, 255);
             hitFeedback.gameObject.transform.GetComponent<Wobble>().DoTheWobble();
         }
+    }
+
+    private void ShowServeTutorial()
+    {
+        tutorialManager.ShowTutorialTap();
+    }
+
+    private void ShowSwipeRightTutorial()
+    {
+        tutorialManager.ShowTutorialSwipeRight();
+    }
+
+    private void ShowSwipeLeftTutorial()
+    {
+        tutorialManager.ShowTutorialSwipeLeft();
     }
 }
