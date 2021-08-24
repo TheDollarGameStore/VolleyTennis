@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
         {
             if (swingReady)
             {
-                if (GameManager.instance.swipeControls.swipeLeft)
+                if (GameManager.instance.swipeControls.swipeLeft || Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     leftSwing = true;
                     racketAnimator.SetBool("swing", true);
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
                     Invoke("SwingCooldownReset", 0.5f);
                 }
 
-                if (GameManager.instance.swipeControls.swipeRight)
+                if (GameManager.instance.swipeControls.swipeRight || Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     leftSwing = false;
                     racketAnimator.SetBool("swing", true);
