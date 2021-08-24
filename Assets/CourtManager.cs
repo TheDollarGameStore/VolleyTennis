@@ -11,7 +11,7 @@ public class CourtManager : MonoBehaviour
     
     void Start()
     {
-        int world = PlayerPrefs.GetInt("world", 1);
+        int world = 20;//PlayerPrefs.GetInt("world", 1);
 
         world = world % 20;
 
